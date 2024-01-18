@@ -25,11 +25,23 @@
 
 <?php
 
-if ($_POST) {
+// echo count($_POST);
+
+// echo var_dump($_POST);
+
+ $isEmpty_name = (bool) $_POST["personal"]["name"];
+
+ $isEmpty_email = (bool) $_POST["personal"]["email"];
+
+if ($isEmpty_name && $isEmpty_email) {
 
     echo  htmlspecialchars("{$_POST["personal"]["name"]}");
 
  
+} else {
+
+    echo  "Вы ничего не ввели";
+
 }
 
 
