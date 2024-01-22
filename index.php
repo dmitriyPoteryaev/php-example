@@ -1,49 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Akytec</title>
-    <link rel="stylesheet" href="style.css">
+    <title>METANIT.COM</title>
+    <meta charset="utf-8" />
 </head>
 
 <body>
-<form action="index.php" method="post">
-    Имя:  <input type="text" name="personal[name]" /><br />
-    Email: <input type="text" name="personal[email]" /><br />
-    Пиво: <br />
-    <select multiple name="beer[]">
-        <option value="warthog">Warthog</option>
-        <option value="guinness">Guinness</option>
-        <option value="stuttgarter">Stuttgarter Schwabenbräu</option>
-    </select><br />
-    <input type="submit" value="Отправь меня!" />
-</form>
+    <h2>Загрузка файла</h2>
+    <form method="post" enctype="multipart/form-data">
+        Выберите файл: <input type="file" name="filename" size="10" /><br /><br />
+        <input type="submit" value="Загрузить" />
+    </form>
+
+</body>
 
 </html>
 
 <?php
 
-// echo count($_POST);
 
-// echo var_dump($_POST);
+if ($_FILES && $_FILES["filename"]["error"] == UPLOAD_ERR_OK) {
 
- $isEmpty_name = (bool) $_POST["personal"]["name"];
 
- $isEmpty_email = (bool) $_POST["personal"]["email"];
+    //  сначала перемещаем файл на севрер
+    $name = $_FILES["filename"]["name"];
 
-if ($isEmpty_name && $isEmpty_email) {
+    move_uploaded_file($_FILES["filename"]["tmp_name"], $name);
+    echo "Файл загружен";
 
-    echo  htmlspecialchars("{$_POST["personal"]["name"]}");
 
- 
-} else {
+    //  скачиваем файл с сервера
+    header('Content-Type: README/md');
 
-    echo  "Вы ничего не ввели";
 
+    header('Content-Disposition: attachment; filename="README.md"');
+
+
+    readfile('README.md');
 }
-
-
-// This is comment
 ?>
