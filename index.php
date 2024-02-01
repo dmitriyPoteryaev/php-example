@@ -38,52 +38,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-
 }
 
 ?>
 
-
 <?php
 
-include "./utils/filterfilesArray.php";
+include "./utils/filteredFilesArray.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $files = scandir("/var/www/html/uploads");
 
-    $filteredFiles =  filterFilesArray($files);
+    $filteredFiles =  filteredFilesArray($files);
 
 ?>
-
     <!DOCTYPE html>
     <html>
 
     <head>
         <title>AKYTEC</title>
         <meta charset="utf-8" />
+        <script defer src="js/script.js"></script>
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-        <h2>Загрузка файла или сохранение файла</h2>
-        <form method="post" enctype="multipart/form-data">
-            Выберите файл: <input type="file" name="filename" /><br /><br />
+        <main class="main">
+        <div class="wrapper_form">
+        <h2> Upload or save file on server </h2>
+        <form class="form" method="post" enctype="multipart/form-data">
+            <label class="save">
+            <input type="file" name="filename" />
             <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-            <input id="upload_btn" name="upload" type="submit" value="Выгрузить с сервера" />
-            <input id="save_btn" name="save" type="submit" value="Сохранить на сервер" />
+            <button id="save_btn" name="save">Save on server</button>
+            </label>
+            <label class="upload">
             <?php
-            if (count(filterFilesArray($files)) == 0) {
 
-                echo "<script> const  ArraySeverFiles =  [];</script>";
+             $js_filteredFilesArray = json_encode(filteredFilesArray($files));
+
+            if (count(filteredFilesArray($files)) == 0) {
+
+                  echo "<script> const  ArraySeverFiles = " . $js_filteredFilesArray . ";</script>";
 
                 echo "На сервере не имеется файлов <br>";
             } else {
 
-                echo "<script> const  ArraySeverFiles = " . json_encode(filterFilesArray($files)) . ";</script>";
+                echo "<script> const  ArraySeverFiles = " . $js_filteredFilesArray . ";</script>";
 
                 echo ' <select name="files" id="files">';
 
-                foreach (filterFilesArray($files) as $file) {
+                foreach (filteredFilesArray($files) as $file) {
 
                     echo '<option value="' . $file . '">' . $file . '</option>';
                 }
@@ -92,13 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
 
             ?>
+            <button id="upload_btn" name="upload">Upload from server</button>
+
+            </label>
         </form>
+        </div>
+        </main>
         <script>
-            const save_button = document.getElementById("upload_btn");
+            const saveButton = document.getElementById("upload_btn");
 
             if (ArraySeverFiles.length === 0) {
 
-                save_button.disabled = true;
+                saveButton.disabled = true;
             }
         </script>
     </body>
