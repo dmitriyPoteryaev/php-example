@@ -7,12 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['filename'])) {
         // Обработка POST-запроса с файлом
 
-        $size_file = $_FILES['filename']['size'];
-
-        $MAX_FILE_SIZE = 30000;
-
-        $MIN_FILE_SIZE = 10000;
-
        
 
             if (isset($_POST["save"])) {

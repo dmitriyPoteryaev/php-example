@@ -3,8 +3,12 @@
 
        function uploadFile($selectedFiles) {
 
+        include "getCSVfile.php";
+
         $basedir = '/var/www/html/uploads/';
 
+
+        echo $selectedFiles;
 
         if (!$selectedFiles) {
             echo '<script type="text/javascript">';
@@ -14,14 +18,16 @@
  
             return;
         }
+
+         getCSVfile();
  
-        $uploadfile = $basedir . $selectedFiles;
+        //  $uploadfile = $basedir . "data.csv";
  
-        header("Content-Disposition: attachment; filename=$selectedFiles");
+        //  header("Content-Disposition: attachment; filename=$selectedFiles");
  
-        header('Content-Type: text/plain');
+        //  header('Content-Type: text/plain');
  
-        readfile($uploadfile);
+        //  readfile($uploadfile);
  
         return;
 
