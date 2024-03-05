@@ -42,7 +42,7 @@ include "./utils/filteredFilesArray.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $files = scandir("/var/www/html/uploads");
+    $files = scandir("/var/www/html/save");
 
     $filteredFiles =  filteredFilesArray($files);
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <body>
         <main class="main">
         <div class="wrapper_form">
-        <h2> Upload or save file on server </h2>
+        <h2> Save xml-file on server and convert to csv-file</h2>
         <form class="form" method="post" enctype="multipart/form-data">
             <label class="save">
             <input type="file" name="filename" />
@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </label>
             <label class="upload">
             <?php
+
 
              $js_filteredFilesArray = json_encode(filteredFilesArray($files));
 
@@ -92,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
 
             ?>
-            <button id="upload_btn" name="upload">Upload from server</button>
+            <button id="upload_btn" name="upload">Download from server</button>
 
             </label>
         </form>

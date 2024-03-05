@@ -5,7 +5,7 @@
 
         include "getCSVfile.php";
 
-        $basedir = '/var/www/html/uploads/';
+        $basedir = '/var/www/html/csvFiles/';
 
 
         echo $selectedFiles;
@@ -19,15 +19,17 @@
             return;
         }
 
-         getCSVfile();
+         getCSVfile($selectedFiles);
+
+         $nameCSVfile = strstr($selectedFiles, '.', true);
  
-        //  $uploadfile = $basedir . "data.csv";
+         $uploadfile = $basedir . $nameCSVfile . ".csv";
  
-        //  header("Content-Disposition: attachment; filename=$selectedFiles");
+         header("Content-Disposition: attachment; filename=$nameCSVfile.csv");
  
-        //  header('Content-Type: text/plain');
+         header('Content-Type: text/plain');
  
-        //  readfile($uploadfile);
+         readfile($uploadfile);
  
         return;
 

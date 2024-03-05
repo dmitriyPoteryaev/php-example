@@ -5,12 +5,24 @@ include "checkFileExtension.php";
 function saveFile($tmpFile, $name) {
 
 
-    $basedir = '/var/www/html/uploads/';
+    $basedir = '/var/www/html/save/';
+
 
     if (!$name) {
         echo '<script type="text/javascript">'; 
         echo 'window.location.href = document.referrer;
               alert("You don\'t choose file for save on server. Please try again!")';
+        echo '</script>';
+
+        return;
+    }
+
+    $array_files = scandir($basedir);
+
+    if (in_array($name, $array_files)) {
+        echo '<script type="text/javascript">'; 
+        echo 'window.location.href = document.referrer;
+              alert("There is already file with this name. Please try again!")';
         echo '</script>';
 
         return;

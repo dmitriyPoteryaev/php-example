@@ -2,7 +2,7 @@
 
 function checkFileExtension($name){
 
-    $textExtensions = array("csv");
+    $textExtensions = array("xml");
 
     $path_info = pathinfo("/var/www/html/uploads/" . $name);
 

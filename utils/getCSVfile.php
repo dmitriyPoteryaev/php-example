@@ -1,11 +1,11 @@
 <?php
 
-function getCSVfile() {
+function getCSVfile($nameXMlfile) {
 
 
 include "parseXmlToArray.php";
 
-$pathXmlFile = '/var/www/html/utils/' . 'catalog.xml';
+$pathXmlFile = '/var/www/html/save/' . $nameXMlfile;
 
 $categories = simplexml_load_file($pathXmlFile);
 
@@ -22,7 +22,9 @@ $columns = ['Артикул', 'Цена', 'Полное имя', 'Имя гру�
 
 // Путь к файлу CSV
 
-$filePath = '/var/www/html/uploads/' . 'data.csv';
+$nameCSVfile = strstr($nameXMlfile, '.', true);
+
+$filePath = '/var/www/html/csvFiles/' . $nameCSVfile . '.csv';
 
 // Открываем файл для записи
 $file = fopen($filePath, 'w');
@@ -42,6 +44,4 @@ $file = fopen($filePath, 'w');
  fclose($file);
 
 }
-
-getCSVfile();
 ?>
