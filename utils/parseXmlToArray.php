@@ -1,25 +1,23 @@
 <?php
 
+// goes through all xml-file and return array of arrays. In each such array there are four values -
+// vendor code, price, full  name, category
 
-// проходит весь xml файл и на выходе создаёт массив из массивов. В каждом таком массиве имеется 4 значения - 
-// Артиккул, цена, полное имя, категория
-// возвращает ма
 
-$array = [];
 $cur_category = "";
 $cur_full_name = "";
 
 function parseXmlToArray($cur_xml) {
 
-  global $array;
+  global $arrayWithRows;
 
-  $array = [];
+  $arrayWithRows = [];
 
 function getArray($xml){
 
 global $cur_category;
 global $cur_full_name;
-global $array;
+global $arrayWithRows;
 
 foreach ($xml as $child) {
 
@@ -43,7 +41,7 @@ foreach ($xml as $child) {
 
     $local_array = [$child->name, $child->price, $cur_full_name, $cur_category];
 
-    array_push($array, $local_array);
+    array_push($arrayWithRows, $local_array);
  
   }
 
@@ -59,7 +57,7 @@ foreach ($xml as $child) {
 
 getArray($cur_xml);
 
-return $array;
+return $arrayWithRows;
 
 }
 

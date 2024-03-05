@@ -1,38 +1,39 @@
 <?php
 
-function getCSVfile($nameXMlfile) {
 
+
+function getCSVfile($nameXMLfile) {
 
 include "parseXmlToArray.php";
 
-$pathXmlFile = '/var/www/html/save/' . $nameXMlfile;
+$pathXmlFile = '/var/www/html/save/' . $nameXMLfile;
 
 $categories = simplexml_load_file($pathXmlFile);
 
-// var_dump($categories->categories);
 
 $array = parseXmlToArray($categories->categories);
 
 
-//  Перевеводим массив array в csv-файл
+//  Convert array with rows to CSV-file
 
-// Названия столбцов
+// Name of columns
 $columns = ['Артикул', 'Цена', 'Полное имя', 'Имя группы'];
 
 
-// Путь к файлу CSV
 
-$nameCSVfile = strstr($nameXMlfile, '.', true);
+$nameCSVfile = strstr($nameXMLfile, '.', true);
 
+// path to CSV-file
 $filePath = '/var/www/html/csvFiles/' . $nameCSVfile . '.csv';
 
-// Открываем файл для записи
+// Open file for writing 
 $file = fopen($filePath, 'w');
-// Записываем заголовки столбцов
+
+// Writing headers columns
 
  fputcsv($file, $columns);
 
-//  Записываем данные
+//  ЗWriting data
 
   foreach ($array as $row) {
  
@@ -40,7 +41,8 @@ $file = fopen($filePath, 'w');
 
   }
 
-// // Закрываем файл
+// Close file
+
  fclose($file);
 
 }

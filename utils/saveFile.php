@@ -7,7 +7,7 @@ function saveFile($tmpFile, $name) {
 
     $basedir = '/var/www/html/save/';
 
-
+//    if file didn't choose than return to form
     if (!$name) {
         echo '<script type="text/javascript">'; 
         echo 'window.location.href = document.referrer;
@@ -16,6 +16,7 @@ function saveFile($tmpFile, $name) {
 
         return;
     }
+    //    if there is already such name of file on server then return to form
 
     $array_files = scandir($basedir);
 
@@ -28,6 +29,7 @@ function saveFile($tmpFile, $name) {
         return;
     }
 
+    // if format of file isn't xml than  return to form
 
     $IsTextExtensionFile =  checkFileExtension($name);
 
