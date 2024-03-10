@@ -1,15 +1,14 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+include "./utils/class.php";
+
+$state = new State;
 
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['filename'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        // Save xml file or download csv file
 
         if (isset($_POST["save"])) {
-
-            include "./utils/saveFile.php";
 
             $name = $_FILES["filename"]["name"];
 
@@ -17,33 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //  save xml file
 
-            saveFile($tmp_name, $name);
-        }
-
-        if (isset($_POST["download"])) {
-
-            include "./utils/downloadCSVfile.php";
-
-            //  download csv-file from server
-
-            $selectedFile = $_POST["files"];
-
-            downloadCSVfile($selectedFile);
-        }
+             $state->createCSV($name, $tmp_name);
     }
+
 }
-
-?>
-
-<?php
-
-include "./utils/filteredFilesArray.php";
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-    $files = scandir("/var/www/html/save");
-
-    $filteredFiles =  filteredFilesArray($files);
 
 ?>
     <!DOCTYPE html>
@@ -68,51 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <label class="download">
                         <?php
 
+                        echo $state->error;
 
-                        $js_filteredFilesArray = json_encode(filteredFilesArray($files));
-
-                        if (count(filteredFilesArray($files)) == 0) {
-
-                            echo "<script> const  ArraySeverFiles = " . $js_filteredFilesArray . ";</script>";
-
-                            echo "На сервере не имеется файлов <br>";
-                        } else {
-
-                            echo "<script> const  ArraySeverFiles = " . $js_filteredFilesArray . ";</script>";
-
-                            echo ' <select name="files" id="files">';
-
-                            foreach (filteredFilesArray($files) as $file) {
-
-                                echo '<option value="' . $file . '">' . $file . '</option>';
-                            }
-
-                            echo  '</select>';
-                        }
 
                         ?>
-                        <button id="download_btn" name="download">Download from server</button>
 
                     </label>
                 </form>
             </div>
         </main> 
-        <script>
-
-            // TO-DO - можно ли этот кусок сркипта перенести в отдельный файл?
-            const downloadButton = document.getElementById("download_btn");
-
-            if (ArraySeverFiles.length === 0) {
-
-                downloadButton.disabled = true;
-            }
-        </script>
-
 
     </body>
 
     </html>
-
-<?php
-};
-?>

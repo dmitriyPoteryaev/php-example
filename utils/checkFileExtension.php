@@ -2,14 +2,11 @@
 
 // check file extension 
 
-function checkFileExtension($name){
+function checkFileExtension($xmlName){
 
-    $textExtensions = array("xml");
+    $extension = strstr($xmlName, '.', false);
 
-    $path_info = pathinfo("/var/www/html/save/" . $name);
-
-    $file_extension = $path_info['extension'];
-
-    return in_array($file_extension, $textExtensions);
+   return  $extension == '.xml';
+     
 }
 ?>
