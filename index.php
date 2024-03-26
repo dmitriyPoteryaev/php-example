@@ -4,22 +4,17 @@ include "./utils/class.php";
 
 $state = new State;
 
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
-        if (isset($_POST["save"])) {
-
-            $name = $_FILES["filename"]["name"];
 
             $tmp_name = $_FILES["filename"]["tmp_name"];
 
             //  save xml file
 
-             $state->createCSV($name, $tmp_name);
-    }
+             $state->createCSV($tmp_name);
 
-}
+
+
+} if($_SERVER['REQUEST_METHOD'] === 'GET' || $state->error) {
 
 ?>
     <!DOCTYPE html>
@@ -41,19 +36,17 @@ $state = new State;
                         <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
                         <button id="save_btn" name="save">Save on server</button>
                     </label>
-                    <label class="download">
+                    <span class="error">
                         <?php
-
                         echo $state->error;
-
-
                         ?>
-
-                    </label>
+                    </span>
                 </form>
             </div>
         </main> 
 
     </body>
-
     </html>
+
+    <?php
+};

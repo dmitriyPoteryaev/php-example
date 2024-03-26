@@ -4,61 +4,44 @@
 // vendor code, price, full  name, category
 
 
-$cur_category = "";
-$cur_full_name = "";
-
-function parseXmlToArray($cur_xml) {
-
-  global $arrayWithRows;
+function parseXmlToArray($cur_xml)  {
 
   $arrayWithRows = [];
+  $cur_category = "";
+  $cur_full_name = "";
 
-function getArray($xml){
+  function getArray($xml, $cur_category, $cur_full_name, &$arrayWithRows) {
 
-global $cur_category;
-global $cur_full_name;
-global $arrayWithRows;
+    foreach ($xml as $child) {
 
-foreach ($xml as $child) {
+      $cur_tag_name = $child->getName();
 
+      $cur_path = $child->xpath("..")[0]->getName();
 
-  if($child->getName() == "name" && $child->xpath("..")[0]->getName() == "category"){ 
+      if ($cur_tag_name == "name" && $cur_path == "category") {
 
-    $cur_category = $child;
-  
+        $cur_category = $child;
+      }
+      if ($cur_tag_name == "name" && $cur_path == "product") {
+
+        $cur_full_name = $child;
+      }
+      if ($cur_tag_name == "price" && $cur_path == "prices" && $child->xpath("../..")[0]->getName() == "product") {
+
+        $local_array = [$child->name, $child->price, $cur_full_name, $cur_category];
+
+        array_push($arrayWithRows, $local_array);
+      }
+      if (is_array((array) $child[0])) {
+
+        getArray($child, $cur_category, $cur_full_name, $arrayWithRows);
+      }
+    }
   }
 
+  getArray($cur_xml, $cur_category, $cur_full_name, $arrayWithRows);
 
-
-  if($child->getName() == "name" && $child->xpath("..")[0]->getName() == "product"){
-
-    $cur_full_name = $child;
-  
-  }
-
-
-  if($child->getName() == "price" && $child->xpath("..")[0]->getName() == "prices" && $child->xpath("../..")[0]->getName() == "product"){
-
-    $local_array = [$child->name, $child->price, $cur_full_name, $cur_category];
-
-    array_push($arrayWithRows, $local_array);
- 
-  }
-
-  if(is_array((array) $child[0])){
-
-    getArray($child);
-
-  }
-
-}
-
-}
-
-getArray($cur_xml);
-
-return $arrayWithRows;
-
+  return $arrayWithRows;
 }
 
 ?>
