@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      container_name: lempdock_php-fpm_1
     volumes:
     # Mounts the local 'app' directory to the container's Nginx root
       - ./app:/var/www/html  
@@ -22,3 +21,19 @@ services:
       - "8080:80"
     depends_on:
       - php-fpm  # Depends on the PHP-FPM service
+
+        # MySQL Service
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:
