@@ -1,39 +1,9 @@
-version: '3.9'
+version: '2'
 services:
-  # PHP-FPM Service
-  php-fpm:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  php:
+    image: yiisoftware/yii2-php:8.3-apache
     volumes:
-    # Mounts the local 'app' directory to the container's Nginx root
-      - ./app:/var/www/html  
-
-  # NGINX Service
-  nginx:
-    build:
-      context: .
-      dockerfile: ./nginx/Dockerfile
-    volumes:
-    # Mountlocal 'app' directory to the Nginx root
-      - ./app:/var/www/html 
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app:delegated
     ports:
-      - "8080:80"
-    depends_on:
-      - php-fpm  # Depends on the PHP-FPM service
-
-        # MySQL Service
-  mysql:
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user_password
-    volumes:
-      - mysql_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-
-volumes:
-  mysql_data:
+      - '8000:80'
